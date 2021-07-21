@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public enum AsteroidType
 {
@@ -14,10 +16,11 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private GameObject prefab;
     [SerializeField] private GameObject deathEffect;
     [SerializeField] private float moveSpeed;
-    [SerializeField] private AsteroidType m_AsteroidType;
+    [FormerlySerializedAs("m_AsteroidType")] [SerializeField] private AsteroidType asteroidType;
     [SerializeField] private AudioSource soundEffect;
     [SerializeField] private List<AudioClip> soundEffects = new List<AudioClip>();
 
+    [SerializeField] private AsteroidHandler handler;
     private Rigidbody2D rb2d;
 
     private void Awake()
@@ -28,8 +31,25 @@ public class Asteroid : MonoBehaviour
 
     private void Start()
     {
-        soundEffect.clip = AssignSoundEffect(m_AsteroidType);
-        transform.localScale = ResizeAsteroid(m_AsteroidType);
+        soundEffect.clip = AssignSoundEffect(asteroidType);
+        transform.localScale = ResizeAsteroid(asteroidType);
+
+        handler = null;
+        if (FindObjectOfType<AsteroidHandler>())
+        {
+            handler = FindObjectOfType<AsteroidHandler>();
+            handler.asteroids.Add(gameObject);
+        } 
+
+        moveSpeed *= Random.Range(1, 3);
+
+        var transform1 = transform;
+        var rotation = transform1.rotation;
+        rotation = Random.rotation;
+        rotation.y = 0;
+        rotation.x = 0;
+
+        transform1.rotation = rotation;
     }
     private void FixedUpdate() => MoveAsteroid();
 
@@ -42,8 +62,8 @@ public class Asteroid : MonoBehaviour
     {
         // the new size of the asteroid
         Vector3 scale = Vector3.one;
-        AsteroidType newType = m_AsteroidType;
-        switch (m_AsteroidType)
+        AsteroidType newType = asteroidType;
+        switch (asteroidType)
         {
             case AsteroidType.Large: 
             scale = ResizeAsteroid(AsteroidType.Medium);
@@ -63,7 +83,7 @@ public class Asteroid : MonoBehaviour
         component.enabled = false;
         component1.enabled = false;
         
-        if (m_AsteroidType == AsteroidType.Small)
+        if (asteroidType == AsteroidType.Small)
             StartCoroutine(DestroyMe());
         
         else
@@ -84,7 +104,7 @@ public class Asteroid : MonoBehaviour
                 obj.GetComponent<SpriteRenderer>().enabled = true;
                 
                 var asteroid = obj.GetComponent<Asteroid>();
-                asteroid.soundEffect.clip = AssignSoundEffect(asteroid.m_AsteroidType = newType);
+                asteroid.soundEffect.clip = AssignSoundEffect(asteroid.asteroidType = newType);
             }
         }
     }
@@ -157,6 +177,8 @@ public class Asteroid : MonoBehaviour
         soundEffect.Play();
         
         yield return new WaitForSecondsRealtime(3);
-        Destroy(gameObject);
+        if (handler != null) 
+            handler.RemoveFromList(gameObject);
+        else Destroy(gameObject);
     }
 }

@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1507011517939159114}
   - component: {fileID: 695873553}
   - component: {fileID: 695873556}
+  - component: {fileID: 695873554}
   - component: {fileID: 627190198}
-  - component: {fileID: 1406037204}
   m_Layer: 0
   m_Name: Asteroid
   m_TagString: Asteroid
@@ -187,6 +187,27 @@ PolygonCollider2D:
       - {x: 0.09375, y: 0.03125}
       - {x: -0.09375, y: -0.09375}
       - {x: -0.21875, y: -0.15625}
+--- !u!114 &695873554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507011517939159119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c594d97dec73c94892d6f57a0cbe40a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1507011517939159119}
+  deathEffect: {fileID: 8564737055994262376, guid: edc23ca18cad05f44953d6f7db40c70b, type: 3}
+  moveSpeed: 200
+  m_AsteroidType: 0
+  soundEffect: {fileID: 0}
+  soundEffects:
+  - {fileID: 8300000, guid: c5b2a51afc82ebc44bc80403a0201ed5, type: 3}
+  - {fileID: 8300000, guid: 470d1deec34ac0c49887bde071fa3ef7, type: 3}
+  - {fileID: 8300000, guid: 7961a6ed7a87d374381bf92095cac0ac, type: 3}
 --- !u!82 &627190198
 AudioSource:
   m_ObjectHideFlags: 0
@@ -283,25 +304,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1406037204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1507011517939159119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 457c31e1adc0d3f41b52eb3fd52605eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 1507011517939159119}
-  deathEffect: {fileID: 8564737055994262376, guid: edc23ca18cad05f44953d6f7db40c70b, type: 3}
-  moveSpeed: 400
-  asteroidType: 0
-  soundEffect: {fileID: 627190198}
-  soundEffects:
-  - {fileID: 8300000, guid: c5b2a51afc82ebc44bc80403a0201ed5, type: 3}
-  - {fileID: 8300000, guid: 470d1deec34ac0c49887bde071fa3ef7, type: 3}
-  - {fileID: 8300000, guid: 7961a6ed7a87d374381bf92095cac0ac, type: 3}
-  handler: {fileID: 0}

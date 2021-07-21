@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5498024259534310883}
   - component: {fileID: 5498024259534310882}
-  - component: {fileID: 5414206893383920371}
   - component: {fileID: 3186108132696937206}
   - component: {fileID: 1648828080368329172}
   - component: {fileID: 4244107753092204016}
   - component: {fileID: 4864716966999941592}
+  - component: {fileID: 4259276115593451235}
   m_Layer: 0
   m_Name: bullet
   m_TagString: Untagged
@@ -87,20 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5414206893383920371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5498024259534310881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9113b00bbee520642b921d07e0376aba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 150
-  m_CircleCollider2D: {fileID: 4244107753092204016}
 --- !u!50 &3186108132696937206
 Rigidbody2D:
   serializedVersion: 4
@@ -250,3 +236,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4259276115593451235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5498024259534310881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb03dfd1de134848bbae3533250259a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 400
+  m_CircleCollider2D: {fileID: 4244107753092204016}

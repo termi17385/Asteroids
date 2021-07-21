@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8564737055994262373}
   - component: {fileID: 8564737055994262374}
   - component: {fileID: 8564737055994262375}
+  - component: {fileID: 2990676803091312776}
   m_Layer: 0
   m_Name: AsteroidDeathEffect
   m_TagString: Untagged
@@ -4862,3 +4863,15 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &2990676803091312776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8564737055994262376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a888e106f9c27b4b8faa04cf3f91765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
