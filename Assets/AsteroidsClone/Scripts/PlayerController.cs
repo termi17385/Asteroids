@@ -25,7 +25,7 @@ namespace Asteroids.player
         // Start is called before the first frame update
         void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
             
             rb2d = GetComponent<Rigidbody2D>();
             thruster.SetActive(false);
