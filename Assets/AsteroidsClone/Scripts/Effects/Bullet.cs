@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
       if (other.CompareTag("Asteroid"))
       {
          var asteroid = other.GetComponent<Asteroid>();
-         asteroid.Kill();
+         asteroid.AsteroidDeath();
          Destroy(gameObject);
       }
    }
@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour
    }
    IEnumerator DestroyMe()
    {
-      yield return new WaitForSecondsRealtime(2.5f);
+      yield return new WaitForSecondsRealtime(.5f);
       Destroy(gameObject);
    }
 }

@@ -7,54 +7,67 @@ using Random = UnityEngine.Random;
 
 public class AsteroidSpawner : SerializedMonoBehaviour
 {
-    [SerializeField] private float distance;
-    [SerializeField] private Transform OTransform;
-    [SerializeField] private Vector2 spawnCoords;
+    public delegate void AsteroidCountDelegate(int _increment);
+    public static event AsteroidCountDelegate CountEvent;
+    
+    [SerializeField] private List<Transform> listOfSpawnPoints = new List<Transform>();
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private bool debug = false;
 
-    [SerializeField] private Transform overlap;
-    public bool pressed;
+    public static AsteroidSpawner instance;
+    [SerializeField] private int spawnAmount = 5;
+    [SerializeField] private int maxAsteroids;
+    
+    public int asteroidCount;
 
-    private Color color;
-
-    private void Start()
+    private void Awake()
     {
-        Spawn();
+        if(instance == null) instance = this;
+        else Destroy(instance);
+
+        CountEvent += AsteroidsSpawning;
+        maxAsteroids = 4 * spawnAmount;
     }
 
-    public void Spawn()
+    private void AsteroidsSpawning(int _increment)
     {
-        Transform transform2 = null;
-        for (int i = 0; i < 4; i++)
-        {
-            if(overlap != null) transform2 = overlap;
-            spawnCoords.x = Random.Range(-4, 4);
-            spawnCoords.y = Random.Range(-4, 4);
-
-            var transform1 = transform;
-            var position = transform1.position;
+        asteroidCount += _increment;
         
-            position.x += (spawnCoords.x * 2);
-            position.y += (spawnCoords.y * 2);
-            position.z = 0;
+        if (asteroidCount < maxAsteroids) return;
+        spawnAmount += 5;
+        Spawn((spawnAmount));
+        
+        maxAsteroids = (spawnAmount * 4);
+        asteroidCount = 0;
+    }
+    public static void OnAsteroidDestroy(int _increment) => CountEvent?.Invoke(_increment); 
+    private void Start() => Spawn(spawnAmount);
+    private void Spawn(int _spawnAmount)
+    {
+        if (listOfSpawnPoints.Count <= 0) 
+        {
+            foreach (Transform child in transform)
+                listOfSpawnPoints.Add(child);
+        }
+        
+        for (int i = 0; i < _spawnAmount; i++)
+        {
+            var index = Random.Range(0, listOfSpawnPoints.Count);
+            var spawnPos = listOfSpawnPoints[index];
 
-            var rotation = transform1.rotation;
-            rotation = Random.rotation;
-            
-            rotation.x = 0;
-            rotation.y = 0;
-            rotation.z *= 2;
-            
-            overlap = Instantiate(OTransform, position, rotation).transform;
-            
-            if(transform2 != null)
-            { if (transform2.position == overlap.position)
-                {
-                    var t = overlap.position;
-                    t.x *= 2;
-                    t.y *= 2;
-                    overlap.position = t;
-                }
-            }
+            var rotation = Random.rotation;
+            rotation.y = (rotation.x = 0);
+            Instantiate(prefab, spawnPos.position, rotation);
+        }
+    }
+
+    private void OnDisable() => CountEvent -= AsteroidsSpawning;
+    private void OnDrawGizmos()
+    {
+        if (debug)
+        {
+            foreach (Transform child in transform)
+                listOfSpawnPoints.Add(child);
         }
     }
 }

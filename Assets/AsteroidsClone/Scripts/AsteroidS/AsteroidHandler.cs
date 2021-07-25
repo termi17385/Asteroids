@@ -11,7 +11,7 @@ public class AsteroidHandler : MonoBehaviour
     [ReadOnly] public List<GameObject> asteroids = new List<GameObject>();
     private AsteroidSpawner spawner;
     
-
+    
     private void Awake()
     {
         spawner = FindObjectOfType<AsteroidSpawner>();
