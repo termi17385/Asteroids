@@ -12,6 +12,7 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText, currentScoreText, highScoreText;
     [SerializeField] private GameObject prefab, p_prefab, deathMenu;
     [SerializeField] private Transform content, p_content;
+    [SerializeField] private bool disabled = true;
     
     private List<GameObject> livesObjects = new List<GameObject>();
     private List<HighScore> highScores = new List<HighScore>();
@@ -52,18 +53,20 @@ public class ScoreManager : MonoBehaviour
     #region Scoring
     private void LoadScores()
     {
-        // load the scores
-        var scoreData = HighscoreSaveSystem.Instance.LoadData().scoreData;
+        var scoreData = SaveSystem.instance.LoadData().scoreData;
         highScores.Clear(); // make sure list is cleared
-        
-        // add the loaded scores to the list            
-        foreach (var data in scoreData)
+
+        if(scoreData != null)
         {
-            highScores.Add(new HighScore()
+            // add the loaded scores to the list            
+            foreach (var data in scoreData)
             {
-                name = data.name,
-                data = data.highScore
-            });
+                highScores.Add(new HighScore()
+                {
+                    name = data.name,
+                    data = data.highScore
+                });
+            }
         }
     }
 
@@ -71,7 +74,7 @@ public class ScoreManager : MonoBehaviour
     {
         var hData = _data;
         hData.SaveData(_currentName, _highScore);
-        HighscoreSaveSystem.Instance.SaveData(hData);
+        SaveSystem.instance.SaveData(hData);
     }
     #endregion
 
@@ -116,15 +119,15 @@ public class ScoreManager : MonoBehaviour
             
         Cursor.lockState = CursorLockMode.None;
         lives = 0;
-        if(HighscoreSaveSystem.Instance != null)
-            LoadScores();
+        
+        if(!disabled) LoadScores();
             
         deathMenu.SetActive(true);
         Debug.Log("GameOver");
         currentScoreText.text = $"CurrentScore:{CurrentScore:D8}";
 
         bool nameExists = false;
-        if (HighscoreSaveSystem.Instance != null)
+        if (SaveSystem.instance != null)
         {
             foreach (var data in highScores)
             {
@@ -140,7 +143,7 @@ public class ScoreManager : MonoBehaviour
             if (!nameExists) highScore = CurrentScore;
 
             highScoreText.text = $"HighScore:{highScore:D8}";
-            SaveScores(HighscoreSaveSystem.Instance.LoadData(), pName, highScore);
+            if(!disabled) SaveScores(SaveSystem.instance.LoadData(), pName, highScore);
         }
     }
     private IEnumerator SpawnPlayer()

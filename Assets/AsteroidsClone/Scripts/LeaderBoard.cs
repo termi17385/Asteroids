@@ -13,7 +13,7 @@ public class LeaderBoard : MonoBehaviour
     
     private void Start()
    {
-       HighscoreSaveSystem.Instance.CreateDefaultFile();
+       SaveSystem.instance.CreateDefaultFile(); 
        LoadLeaderBoard();
    }
     /// <summary>
@@ -22,7 +22,7 @@ public class LeaderBoard : MonoBehaviour
     private void LoadLeaderBoard()
     {
         // sorts the data by descending order
-        var data = HighscoreSaveSystem.Instance.LoadData();
+        var data = SaveSystem.instance.LoadData();
         var sortedList = data.scoreData
             .OrderByDescending(_x => _x.highScore);
         

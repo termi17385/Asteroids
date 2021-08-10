@@ -5,7 +5,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
 
-public class AsteroidSpawner : SerializedMonoBehaviour
+public class AsteroidSpawner : MonoBehaviour
 {
     public delegate void AsteroidCountDelegate(int _increment);
     public static event AsteroidCountDelegate CountEvent;
@@ -13,6 +13,7 @@ public class AsteroidSpawner : SerializedMonoBehaviour
     [SerializeField] private List<Transform> listOfSpawnPoints = new List<Transform>();
     [SerializeField] private GameObject prefab;
     [SerializeField] private bool debug = false;
+    [SerializeField] private bool UnitTesting = false;
 
     public static AsteroidSpawner instance;
     [SerializeField] private int spawnAmount = 5;
@@ -28,11 +29,12 @@ public class AsteroidSpawner : SerializedMonoBehaviour
         CountEvent += AsteroidsSpawning;
         maxAsteroids = 4 * spawnAmount;
     }
+    private void Start() { if(!UnitTesting)Spawn(spawnAmount); }
 
     private void AsteroidsSpawning(int _increment)
     {
         asteroidCount += _increment;
-        
+
         if (asteroidCount < maxAsteroids) return;
         spawnAmount += 5;
         Spawn((spawnAmount));
@@ -41,8 +43,7 @@ public class AsteroidSpawner : SerializedMonoBehaviour
         asteroidCount = 0;
     }
     public static void OnAsteroidDestroy(int _increment) => CountEvent?.Invoke(_increment); 
-    private void Start() => Spawn(spawnAmount);
-    private void Spawn(int _spawnAmount)
+    public void Spawn(int _spawnAmount)
     {
         if (listOfSpawnPoints.Count <= 0) 
         {
@@ -60,7 +61,20 @@ public class AsteroidSpawner : SerializedMonoBehaviour
             Instantiate(prefab, spawnPos.position, rotation);
         }
     }
+    
+    /// <summary>
+    /// Only for testing
+    /// </summary>
+    public GameObject Spawn()
+    {
+        var index = Random.Range(0, listOfSpawnPoints.Count);
+        var spawnPos = listOfSpawnPoints[index];
 
+        var rotation = Random.rotation;
+        rotation.y = (rotation.x = 0);
+    
+        return Instantiate(prefab, spawnPos.position, rotation);
+    }
     private void OnDisable() => CountEvent -= AsteroidsSpawning;
     private void OnDrawGizmos()
     {
